@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mklilley/epic-nfts/issues"
   },
-  "homepage": "https://github.com/mklilley/epic-nfts#readme"
+  "homepage": "https://github.com/mklilley/epic-nfts#readme",
+  "devDependencies": {
+    "hardhat": "^2.8.2"
+  }
 }
