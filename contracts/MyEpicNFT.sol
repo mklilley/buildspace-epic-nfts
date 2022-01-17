@@ -15,7 +15,7 @@ contract MyEpicNFT is ERC721URIStorage {
     Counters.Counter private _tokenIds;
 
     // We need to pass the name of our NFTs token and its symbol.
-    constructor() ERC721("SquareNFT", "SQUARE") {
+    constructor() ERC721("ShaiHulud", "WORM") {
         console.log("I must not fear. Fear is the mind-killer.");
     }
 
@@ -33,7 +33,10 @@ contract MyEpicNFT is ERC721URIStorage {
         _safeMint(msg.sender, newItemId);
 
         // Set the NFTs data.
-        _setTokenURI(newItemId, "https://jsonkeeper.com/b/CG30");
+        _setTokenURI(
+            newItemId,
+            "https://json.lilley.io/box_ec8adabf48f555297aea/61e582aa8e3b692a0c7ec350"
+        );
 
         console.log(
             "An NFT w/ ID %s has been minted to %s",
