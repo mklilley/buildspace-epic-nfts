@@ -15,7 +15,7 @@ contract MyEpicNFT is ERC721URIStorage {
     Counters.Counter private _tokenIds;
 
     // We need to pass the name of our NFTs token and its symbol.
-    constructor() ERC721("ShaiHulud", "WORM") {
+    constructor() ERC721("SquareNFT", "SQUARE") {
         console.log("I must not fear. Fear is the mind-killer.");
     }
 
@@ -35,7 +35,7 @@ contract MyEpicNFT is ERC721URIStorage {
         // Set the NFTs data.
         _setTokenURI(
             newItemId,
-            "https://json.lilley.io/box_ec8adabf48f555297aea/61e582aa8e3b692a0c7ec350"
+            "data:application/json;base64,eyJuYW1lIjogIlRlYW1TaGVlcFdvbGYiLCJkZXNjcmlwdGlvbiI6ICJBbiBORlQgZnJvbSB0aGUgaGlnaGx5IGFjY2xhaW1lZCBzcXVhcmUgY29sbGVjdGlvbiIsImltYWdlIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhCeVpYTmxjblpsUVhOd1pXTjBVbUYwYVc4OUluaE5hVzVaVFdsdUlHMWxaWFFpSUhacFpYZENiM2c5SWpBZ01DQXpOVEFnTXpVd0lqNEtJQ0FnSUR4emRIbHNaVDR1WW1GelpTQjdJR1pwYkd3NklIZG9hWFJsT3lCbWIyNTBMV1poYldsc2VUb2dRWEpwWVd3N0lHWnZiblF0YzJsNlpUb2dOREJ3ZURzZ2ZUd3ZjM1I1YkdVK0NpQWdJQ0E4Y21WamRDQjNhV1IwYUQwaU1UQXdKU0lnYUdWcFoyaDBQU0l4TURBbElpQm1hV3hzUFNJak1rVTRRa013SWlBdlBnb2dJQ0FnUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kxTUNVaUlHTnNZWE56UFNKaVlYTmxJaUJrYjIxcGJtRnVkQzFpWVhObGJHbHVaVDBpYldsa1pHeGxJaUIwWlhoMExXRnVZMmh2Y2owaWJXbGtaR3hsSWo1VVpXRnRVMmhsWlhCWGIyeG1QQzkwWlhoMFBnbzhMM04yWno0PSJ9"
         );
 
         console.log(
