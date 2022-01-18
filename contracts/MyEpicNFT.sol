@@ -2,49 +2,202 @@
 
 pragma solidity ^0.8.0;
 
-// We first import some OpenZeppelin Contracts.
+// We need some util functions for strings.
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
 
-// We inherit the contract we imported. This means we'll have access
-// to the inherited contract's methods.
+// We need to import the helper functions from the contract that we copy/pasted.
+import {Base64} from "./libraries/Base64.sol";
+
 contract MyEpicNFT is ERC721URIStorage {
-    // Magic given to us by OpenZeppelin to help us keep track of tokenIds.
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    // We need to pass the name of our NFTs token and its symbol.
+    // This is our SVG code. All we need to change is the word that's displayed. Everything else stays the same.
+    // So, we make a baseSvg variable here that all our NFTs can use.
+    string baseSvg =
+        "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: white; font-family: Arial; font-size: 30px; }</style><rect width='100%' height='100%' fill='#2E8BC0' /><text x='50%' y='50%' class='base' dominant-baseline='middle' text-anchor='middle'>";
+
+    // I create three arrays, each with their own theme of random words.
+    // Pick some random funny words, names of anime characters, foods you like, whatever!
+    string[] firstWords = [
+        "Easy",
+        "Handsome",
+        "Berserk",
+        "Crabby",
+        "Ruthless",
+        "Faithful",
+        "Macho",
+        "Blushing",
+        "Immense",
+        "Misty",
+        "Classy",
+        "Wrathful",
+        "Meaty",
+        "Filthy",
+        "Bouncy",
+        "Giddy",
+        "Tacky",
+        "Happy",
+        "Superb",
+        "Clammy",
+        "Deranged",
+        "Ratchet",
+        "Leaky",
+        "Hungry",
+        "Smelly",
+        "Luscious"
+    ];
+    string[] secondWords = [
+        "Blood",
+        "Breath",
+        "Hair",
+        "Soup",
+        "Pie",
+        "Shirt",
+        "Death",
+        "Wood",
+        "Math",
+        "Tongue",
+        "Truth",
+        "Map",
+        "Pig",
+        "Wolf",
+        "Cat",
+        "Dog",
+        "Phone",
+        "Bread",
+        "Bath",
+        "Tea",
+        "Beer",
+        "King",
+        "Wife",
+        "Chest",
+        "Flight",
+        "Cheek",
+        "Mud",
+        "Girl",
+        "Hat",
+        "Queen",
+        "Lab",
+        "Month",
+        "Dirt",
+        "Day"
+    ];
+
     constructor() ERC721("SquareNFT", "SQUARE") {
-        console.log("I must not fear. Fear is the mind-killer.");
+        console.log("This is my NFT contract. Woah!");
     }
 
-    // A function our user will hit to get their NFT.
+    function pickRandomWord(
+        uint256 tokenId,
+        string memory seedWord,
+        string[] memory wordArray
+    ) public pure returns (string memory) {
+        // I seed the random generator. More on this in the lesson.
+        uint256 rand = random(
+            string(abi.encodePacked(seedWord, Strings.toString(tokenId)))
+        );
+        // Squash the # between 0 and the length of the array to avoid going out of bounds.
+        rand = rand % wordArray.length;
+        return wordArray[rand];
+    }
+
+    // I create a function to randomly pick a word from each array.
+    function pickRandomFirstWord(uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
+        // I seed the random generator. More on this in the lesson.
+        uint256 rand = random(
+            string(abi.encodePacked("FIRST_WORD", Strings.toString(tokenId)))
+        );
+        // Squash the # between 0 and the length of the array to avoid going out of bounds.
+        rand = rand % firstWords.length;
+        return firstWords[rand];
+    }
+
+    function random(string memory input) internal pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(input)));
+    }
+
     function makeAnEpicNFT() public {
-        // Get the current tokenId, this starts at 0.
-        // _tokenIds is a state variable which means its value is stored
-        // on the smart contract itself
         uint256 newItemId = _tokenIds.current();
 
-        // Actually mint the NFT to the sender using msg.sender.
-        // msg.sender is something that Solidity provides based on who is
-        // calling the smart contract. You can't spoof this - someone has to
-        // sign the call to the contract.
-        _safeMint(msg.sender, newItemId);
-
-        // Set the NFTs data.
-        _setTokenURI(
+        // We go and randomly grab one word from each of the three arrays.
+        string memory first = pickRandomWord(
             newItemId,
-            "data:application/json;base64,eyJuYW1lIjogIlRlYW1TaGVlcFdvbGYiLCJkZXNjcmlwdGlvbiI6ICJBbiBORlQgZnJvbSB0aGUgaGlnaGx5IGFjY2xhaW1lZCBzcXVhcmUgY29sbGVjdGlvbiIsImltYWdlIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhCeVpYTmxjblpsUVhOd1pXTjBVbUYwYVc4OUluaE5hVzVaVFdsdUlHMWxaWFFpSUhacFpYZENiM2c5SWpBZ01DQXpOVEFnTXpVd0lqNEtJQ0FnSUR4emRIbHNaVDR1WW1GelpTQjdJR1pwYkd3NklIZG9hWFJsT3lCbWIyNTBMV1poYldsc2VUb2dRWEpwWVd3N0lHWnZiblF0YzJsNlpUb2dOREJ3ZURzZ2ZUd3ZjM1I1YkdVK0NpQWdJQ0E4Y21WamRDQjNhV1IwYUQwaU1UQXdKU0lnYUdWcFoyaDBQU0l4TURBbElpQm1hV3hzUFNJak1rVTRRa013SWlBdlBnb2dJQ0FnUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kxTUNVaUlHTnNZWE56UFNKaVlYTmxJaUJrYjIxcGJtRnVkQzFpWVhObGJHbHVaVDBpYldsa1pHeGxJaUIwWlhoMExXRnVZMmh2Y2owaWJXbGtaR3hsSWo1VVpXRnRVMmhsWlhCWGIyeG1QQzkwWlhoMFBnbzhMM04yWno0PSJ9"
+            "FIRST_WORD",
+            firstWords
+        );
+        console.log(first);
+        string memory second = pickRandomWord(
+            newItemId,
+            "SECOND_WORD",
+            secondWords
+        );
+        console.log(second);
+
+        string memory third = second;
+
+        while (
+            keccak256(abi.encodePacked(third)) ==
+            keccak256(abi.encodePacked(second))
+        ) {
+            third = pickRandomWord(newItemId, "THIRD_WORD", secondWords);
+            console.log(third);
+        }
+
+        string memory combinedWord = string(
+            abi.encodePacked(first, second, third)
         );
 
+        // I concatenate it all together, and then close the <text> and <svg> tags.
+        string memory finalSvg = string(
+            abi.encodePacked(baseSvg, combinedWord, "</text></svg>")
+        );
+
+        // Get all the JSON metadata in place and base64 encode it.
+        string memory json = Base64.encode(
+            abi.encodePacked(
+                '{"name": "',
+                // We set the title of our NFT as the generated word.
+                combinedWord,
+                '", "description": "A highly acclaimed collection of squares.", "image": "data:image/svg+xml;base64,',
+                // We add data:image/svg+xml;base64 and then append our base64 encode our svg.
+                Base64.encode(bytes(finalSvg)),
+                '"}'
+            )
+        );
+
+        string memory finalTokenUri = string(
+            abi.encodePacked("data:application/json;base64,", json)
+        );
+
+        console.log("\n--------------------");
+        console.log(
+            string(
+                abi.encodePacked(
+                    "https://nftpreview.0xdev.codes/?code=",
+                    finalTokenUri
+                )
+            )
+        );
+        console.log("--------------------\n");
+
+        _safeMint(msg.sender, newItemId);
+
+        // We'll be setting the tokenURI later!
+        _setTokenURI(newItemId, finalTokenUri);
+
+        _tokenIds.increment();
         console.log(
             "An NFT w/ ID %s has been minted to %s",
             newItemId,
             msg.sender
         );
-
-        // Increment the counter for when the next NFT is minted.
-        _tokenIds.increment();
     }
 }
