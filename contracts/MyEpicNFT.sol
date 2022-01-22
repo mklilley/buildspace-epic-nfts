@@ -146,7 +146,6 @@ contract MyEpicNFT is ERC721URIStorage {
             keccak256(abi.encodePacked(second))
         ) {
             third = pickRandomWord(newItemId, "THIRD_WORD", secondWords);
-            console.log(third);
         }
 
         string memory combinedWord = string(
