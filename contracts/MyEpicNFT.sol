@@ -127,6 +127,10 @@ contract MyEpicNFT is ERC721URIStorage {
     }
 
     function makeAnEpicNFT() public {
+        // Maximum 2+1 = 3 NFTs can be minted
+        require(_tokenIds.current() <= 2, "All NFTs have been minted, sorry!");
+
+        _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
 
         // We go and randomly grab one word from each of the three arrays.
@@ -192,7 +196,6 @@ contract MyEpicNFT is ERC721URIStorage {
         // We'll be setting the tokenURI later!
         _setTokenURI(newItemId, finalTokenUri);
 
-        _tokenIds.increment();
         console.log(
             "An NFT w/ ID %s has been minted to %s",
             newItemId,
