@@ -17,12 +17,12 @@ contract MyEpicNFT is ERC721URIStorage {
 
     // This is our SVG code. All we need to change is the word that's displayed. Everything else stays the same.
     // So, we make a baseSvg variable here that all our NFTs can use.
-    string baseSvg =
+    string private baseSvg =
         "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: white; font-family: Arial; font-size: 30px; }</style><rect width='100%' height='100%' fill='#2E8BC0' /><text x='50%' y='50%' class='base' dominant-baseline='middle' text-anchor='middle'>";
 
     // I create three arrays, each with their own theme of random words.
     // Pick some random funny words, names of anime characters, foods you like, whatever!
-    string[] firstWords = [
+    string[] private firstWords = [
         "Easy",
         "Handsome",
         "Berserk",
@@ -50,7 +50,7 @@ contract MyEpicNFT is ERC721URIStorage {
         "Smelly",
         "Luscious"
     ];
-    string[] secondWords = [
+    string[] private secondWords = [
         "Blood",
         "Breath",
         "Hair",
@@ -97,7 +97,7 @@ contract MyEpicNFT is ERC721URIStorage {
         uint256 tokenId,
         string memory seedWord,
         string[] memory wordArray
-    ) public pure returns (string memory) {
+    ) private pure returns (string memory) {
         // I seed the random generator. More on this in the lesson.
         uint256 rand = random(
             string(abi.encodePacked(seedWord, Strings.toString(tokenId)))
@@ -109,7 +109,7 @@ contract MyEpicNFT is ERC721URIStorage {
 
     // I create a function to randomly pick a word from each array.
     function pickRandomFirstWord(uint256 tokenId)
-        public
+        private
         view
         returns (string memory)
     {
@@ -122,7 +122,7 @@ contract MyEpicNFT is ERC721URIStorage {
         return firstWords[rand];
     }
 
-    function random(string memory input) internal pure returns (uint256) {
+    function random(string memory input) private pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
