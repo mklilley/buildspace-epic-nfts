@@ -87,6 +87,8 @@ contract MyEpicNFT is ERC721URIStorage {
         "Day"
     ];
 
+    uint256 private maxNFT = 3;
+
     event NewEpicNFTMinted(address sender, uint256 tokenId);
 
     constructor() ERC721("SquareNFT", "SQUARE") {
@@ -127,8 +129,11 @@ contract MyEpicNFT is ERC721URIStorage {
     }
 
     function makeAnEpicNFT() public {
-        // Maximum 2+1 = 3 NFTs can be minted
-        require(_tokenIds.current() <= 2, "All NFTs have been minted, sorry!");
+        // Maximum number of NFTs can be minted
+        require(
+            _tokenIds.current() <= maxNFT - 1,
+            "All NFTs have been minted, sorry!"
+        );
 
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
