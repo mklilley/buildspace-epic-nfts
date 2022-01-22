@@ -133,13 +133,11 @@ contract MyEpicNFT is ERC721URIStorage {
             "FIRST_WORD",
             firstWords
         );
-        console.log(first);
         string memory second = pickRandomWord(
             newItemId,
             "SECOND_WORD",
             secondWords
         );
-        console.log(second);
 
         string memory third = second;
 
