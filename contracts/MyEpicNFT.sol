@@ -109,21 +109,6 @@ contract MyEpicNFT is ERC721URIStorage {
         return wordArray[rand];
     }
 
-    // I create a function to randomly pick a word from each array.
-    function pickRandomFirstWord(uint256 tokenId)
-        private
-        view
-        returns (string memory)
-    {
-        // I seed the random generator. More on this in the lesson.
-        uint256 rand = random(
-            string(abi.encodePacked("FIRST_WORD", Strings.toString(tokenId)))
-        );
-        // Squash the # between 0 and the length of the array to avoid going out of bounds.
-        rand = rand % firstWords.length;
-        return firstWords[rand];
-    }
-
     function random(string memory input) private pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
