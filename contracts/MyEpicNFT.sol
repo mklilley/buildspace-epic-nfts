@@ -87,7 +87,7 @@ contract MyEpicNFT is ERC721URIStorage {
         "Day"
     ];
 
-    uint256 private maxNFT = 10;
+    uint256 private maxNFT = 100;
 
     event NewEpicNFTMinted(address sender, uint256 tokenId);
 
